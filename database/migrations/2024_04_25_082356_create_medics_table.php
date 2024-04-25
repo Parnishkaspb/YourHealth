@@ -10,17 +10,19 @@ return new class extends Migration {
      */
     public function up(): void
     {
-        Schema::create('users', function (Blueprint $table) {
+        Schema::create('medics', function (Blueprint $table) {
             $table->id();
+            $table->string('name');
+            $table->string('surname');
             $table->string('login')->unique();
-            $table->string('password')->nullable(false);
+            $table->string('password');
+            $table->string('email')->unique();
             $table->string('telephone')->unique();
-            $table->string('passport')->unique();
-            $table->string('name')->nullable(false);
-            $table->string('surname')->nullable(false);
-            $table->string('address')->unique();
-            $table->boolean('firstOrder')->default(false);
+
+            $table->unsignedBigInteger('id_profile_ambulance');
             $table->timestamps();
+
+            $table->foreign('id_profile_ambulance')->references('id')->on('profile_ambulances')->onDelete('cascade');
         });
     }
 
@@ -29,6 +31,6 @@ return new class extends Migration {
      */
     public function down(): void
     {
-        Schema::dropIfExists('users');
+        Schema::dropIfExists('medics');
     }
 };
