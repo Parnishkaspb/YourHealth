@@ -43,7 +43,11 @@ return [
         'api' => [
             'driver' => 'sanctum',
             'provider' => 'users',
-        ]
+        ],
+        'medic' => [
+            'driver' => 'sanctum',
+            'provider' => 'medics',
+        ],
     ],
 
     /*
@@ -68,7 +72,10 @@ return [
             'driver' => 'eloquent',
             'model' => App\Models\User::class,
         ],
-
+        'medics' => [
+            'driver' => 'eloquent',
+            'model' => App\Models\Medic::class,
+        ],
         // 'users' => [
         //     'driver' => 'database',
         //     'table' => 'users',

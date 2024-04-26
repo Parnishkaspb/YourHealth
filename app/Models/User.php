@@ -28,6 +28,7 @@ class User extends Authenticatable
         'address',
         'firstOrder'
     ];
+
     /**
      * Хешировать пароль
      *

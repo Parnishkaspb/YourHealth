@@ -11,18 +11,30 @@ use Illuminate\Support\Facades\Request;
 
 class UserController extends Controller
 {
+    // public function login(LoginRequest $request)
+    // {
+
+    //     if (Auth::attempt($request->only('login', 'password'))) {
+    //         $user = Auth::user();
+    //         $token = $user->createToken('authToken')->plainTextToken;
+
+    //         return new LoginResponseResource(['token' => $token]);
+    //     }
+
+    //     return response()->json(['message' => 'Неверные учетные данные.'], 401);
+    // }
     public function login(LoginRequest $request)
     {
-
-        if (Auth::attempt($request->only('login', 'password'))) {
+        if (Auth::attempt($request->validated())) {
             $user = Auth::user();
-            $token = $user->createToken('authToken')->plainTextToken;
+            $token = $user->createToken('userToken', ['*'])->plainTextToken;
 
             return new LoginResponseResource(['token' => $token]);
         }
 
         return response()->json(['message' => 'Неверные учетные данные.'], 401);
     }
+
 
     public function register(RegisterRequest $request)
     {
@@ -37,7 +49,7 @@ class UserController extends Controller
                 'address' => $request->address,
             ]);
 
-            $token = $user->createToken('authToken')->plainTextToken;
+            $token = $user->createToken('userToken')->plainTextToken;
             return new LoginResponseResource(['token' => $token]);
         } catch (\Throwable $th) {
             return response()->json(['message' => $th->getMessage()], 422);
