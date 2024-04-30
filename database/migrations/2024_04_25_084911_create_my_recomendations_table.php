@@ -12,14 +12,17 @@ return new class extends Migration {
     {
         Schema::create('my_recomendations', function (Blueprint $table) {
             $table->id();
+            $table->unsignedBigInteger('id_visit');
             $table->unsignedBigInteger('id_user');
             $table->unsignedBigInteger('id_medic');
             $table->text('recomendation');
 
             $table->timestamps();
 
+            $table->foreign('id_visit')->references('id')->on('my_visits')->onDelete('cascade');
             $table->foreign('id_user')->references('id')->on('users')->onDelete('cascade');
             $table->foreign('id_medic')->references('id')->on('medics')->onDelete('cascade');
+
         });
     }
 

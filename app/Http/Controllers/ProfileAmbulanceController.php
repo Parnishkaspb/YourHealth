@@ -2,6 +2,8 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\ProfileAmbulance\CreateRequest;
+use App\Http\Resources\CodeResponseResource;
 use App\Models\ProfileAmbulance;
 use Illuminate\Http\Request;
 
@@ -26,9 +28,18 @@ class ProfileAmbulanceController extends Controller
     /**
      * Store a newly created resource in storage.
      */
-    public function store(Request $request)
+    public function store(CreateRequest $request)
     {
-        //
+        // return new CodeResponseResource(['message' => $request->specialization, 'code' => 220]);
+        try {
+            ProfileAmbulance::create([
+                'specialization' => e($request->specialization)
+            ]);
+        } catch (\Throwable $th) {
+            return new CodeResponseResource(['message' => $th->getMessage(), 'code' => 422]);
+        }
+
+        return new CodeResponseResource(['message' => 'Новая специальность добавлена в систему', 'code' => 200]);
     }
 
     /**

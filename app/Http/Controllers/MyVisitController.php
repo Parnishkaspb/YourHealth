@@ -2,25 +2,22 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Resources\MyVisit\VisitResponseResource;
 use App\Models\MyVisit;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
 class MyVisitController extends Controller
 {
     /**
-     * Display a listing of the resource.
+     * Display a listing of the user's visits.
+     *
      */
     public function index()
     {
-        //
-    }
-
-    /**
-     * Show the form for creating a new resource.
-     */
-    public function create()
-    {
-        //
+        $user = Auth::user();
+        $visits = $user->visits()->with(['recommendations', 'medic'])->get();
+        return VisitResponseResource::collection($visits);
     }
 
     /**
@@ -28,7 +25,7 @@ class MyVisitController extends Controller
      */
     public function store(Request $request)
     {
-        //
+
     }
 
     /**

@@ -19,7 +19,8 @@ class Medic extends Authenticatable
         'login',
         'password',
         'email',
-        'telephone'
+        'telephone',
+        'id_profile_ambulance'
     ];
 
     /**
@@ -33,5 +34,14 @@ class Medic extends Authenticatable
         if ($value !== null && $value !== '') {
             $this->attributes['password'] = Hash::make($value);
         }
+    }
+    public function profileAmbulance()
+    {
+        return $this->belongsTo(ProfileAmbulance::class, 'id_profile_ambulance');
+    }
+
+    public function visits()
+    {
+        return $this->hasMany(MyVisit::class, 'id_medic');
     }
 }

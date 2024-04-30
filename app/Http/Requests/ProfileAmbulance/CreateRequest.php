@@ -1,17 +1,18 @@
 <?php
 
-namespace App\Http\Requests\Medic;
+namespace App\Http\Requests\ProfileAmbulance;
 
 use Illuminate\Foundation\Http\FormRequest;
+use Illuminate\Validation\Rule;
 
-class LoginRequest extends FormRequest
+class CreateRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
      */
     // public function authorize(): bool
     // {
-    //     return false;
+    //     return true;
     // }
 
     /**
@@ -22,7 +23,7 @@ class LoginRequest extends FormRequest
     public function rules(): array
     {
         return [
-            //
+            'specialization' => ['required', Rule::unique('profile_ambulances')->ignore($this->id)]
         ];
     }
 }

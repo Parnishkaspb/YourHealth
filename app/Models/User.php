@@ -41,4 +41,10 @@ class User extends Authenticatable
             $this->attributes['password'] = Hash::make($value);
         }
     }
+
+    public function visits()
+    {
+        return $this->hasMany(MyVisit::class, 'id_user');
+    }
+
 }

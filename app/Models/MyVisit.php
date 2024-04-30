@@ -14,4 +14,21 @@ class MyVisit extends Model
         'timetomedic',
         'visit'
     ];
+
+
+    public function user()
+    {
+        return $this->belongsTo(User::class, 'id_user');
+    }
+
+    public function medic()
+    {
+        return $this->belongsTo(Medic::class, 'id_medic');
+    }
+
+    public function recommendations()
+    {
+        return $this->hasMany(MyRecomendation::class, 'id_visit');
+    }
+
 }

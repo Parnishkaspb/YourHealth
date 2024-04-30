@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\User\LoginRequest;
 use App\Http\Requests\User\RegisterRequest;
+use App\Http\Resources\CodeResponseResource;
 use App\Http\Resources\LoginResponseResource;
 use App\Models\User;
 use Illuminate\Support\Facades\Auth;
@@ -32,7 +33,7 @@ class UserController extends Controller
             return new LoginResponseResource(['token' => $token]);
         }
 
-        return response()->json(['message' => 'Неверные учетные данные.'], 401);
+        return new CodeResponseResource(['message' => 'Неверные учетные данные.', 'code' => 401]);
     }
 
 
@@ -52,7 +53,7 @@ class UserController extends Controller
             $token = $user->createToken('userToken')->plainTextToken;
             return new LoginResponseResource(['token' => $token]);
         } catch (\Throwable $th) {
-            return response()->json(['message' => $th->getMessage()], 422);
+            return new CodeResponseResource(['message' => $th->getMessage(), 'code' => 422]);
         }
     }
 
@@ -60,7 +61,7 @@ class UserController extends Controller
     {
         auth()->user()->tokens()->delete();
 
-        return response()->json(['message' => 'Вы успешно вышли из системы']);
+        return new CodeResponseResource(['message' => 'Вы успешно вышли из системы', 'code' => 200]);
     }
 }
 
