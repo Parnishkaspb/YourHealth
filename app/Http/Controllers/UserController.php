@@ -12,18 +12,6 @@ use Illuminate\Support\Facades\Request;
 
 class UserController extends Controller
 {
-    // public function login(LoginRequest $request)
-    // {
-
-    //     if (Auth::attempt($request->only('login', 'password'))) {
-    //         $user = Auth::user();
-    //         $token = $user->createToken('authToken')->plainTextToken;
-
-    //         return new LoginResponseResource(['token' => $token]);
-    //     }
-
-    //     return response()->json(['message' => 'Неверные учетные данные.'], 401);
-    // }
     public function login(LoginRequest $request)
     {
         if (Auth::attempt($request->validated())) {

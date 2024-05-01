@@ -8,9 +8,7 @@ use App\Models\Medic;
 use Illuminate\Http\Request;
 use App\Http\Resources\{LoginResponseResource, CodeResponseResource};
 use App\Http\Controllers\Controller;
-use App\Models\ProfileAmbulance;
 use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Facades\Hash;
 
 
 class MedicController extends Controller
@@ -59,7 +57,7 @@ class MedicController extends Controller
      */
     public function update(RegisterRequest $request, Medic $medic)
     {
-        //
+
     }
 
     /**
