@@ -26,11 +26,11 @@ class RegisterRequest extends FormRequest
 
         return [
             'login' => ['required', 'string', 'max:255', Rule::unique('medics')->ignore($medicId)],
-            'password' => ['required'],
             'name' => ['required', 'string', 'max:255'],
             'surname' => ['required', 'string', 'max:255'],
             'telephone' => ['required', 'string', Rule::unique('medics')->ignore($medicId)],
             'email' => ['required', 'email', 'string', Rule::unique('medics')->ignore($medicId)],
+            'id_profile_ambulance' => ['required']
         ];
     }
 }

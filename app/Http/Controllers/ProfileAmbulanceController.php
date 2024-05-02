@@ -4,8 +4,11 @@ namespace App\Http\Controllers;
 
 use App\Http\Requests\ProfileAmbulance\CreateRequest;
 use App\Http\Resources\CodeResponseResource;
+use App\Http\Resources\Codes\{ErrorOutRuleResponseResource, UnprocessableContentResponseResource, SuccessUpdateResponseResource};
+use App\Http\Resources\ProfileAmbulance\AllProfileAmbulancesResponseResource;
 use App\Models\ProfileAmbulance;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
 class ProfileAmbulanceController extends Controller
 {
@@ -14,7 +17,8 @@ class ProfileAmbulanceController extends Controller
      */
     public function index()
     {
-        //
+        $all = ProfileAmbulance::all();
+        return AllProfileAmbulancesResponseResource::collection($all);
     }
 
     /**
@@ -30,16 +34,20 @@ class ProfileAmbulanceController extends Controller
      */
     public function store(CreateRequest $request)
     {
-        // return new CodeResponseResource(['message' => $request->specialization, 'code' => 220]);
+        $medic = Auth::user();
+        $allowedRoles = config('app.allowed_roles');
+        if (!in_array($medic->id_profile_ambulance, $allowedRoles)) {
+            return new ErrorOutRuleResponseResource([]);
+        }
+
         try {
             ProfileAmbulance::create([
                 'specialization' => e($request->specialization)
             ]);
+            return new CodeResponseResource(['message' => 'Новая специальность добавлена в систему', 'code' => 200]);
         } catch (\Throwable $th) {
-            return new CodeResponseResource(['message' => $th->getMessage(), 'code' => 422]);
+            return new UnprocessableContentResponseResource(['message' => $th->getMessage()]);
         }
-
-        return new CodeResponseResource(['message' => 'Новая специальность добавлена в систему', 'code' => 200]);
     }
 
     /**
@@ -61,9 +69,22 @@ class ProfileAmbulanceController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, ProfileAmbulance $profileAmbulance)
+    public function update(CreateRequest $request, ProfileAmbulance $specialization)
     {
-        //
+        $medic = Auth::user();
+        $allowedRoles = config('app.allowed_roles');
+        if (!in_array($medic->id_profile_ambulance, $allowedRoles)) {
+            return new ErrorOutRuleResponseResource([]);
+        }
+
+        try {
+            $specialization->update([
+                'specialization' => e($request->specialization)
+            ]);
+            return new SuccessUpdateResponseResource([]);
+        } catch (\Throwable $th) {
+            return new UnprocessableContentResponseResource(['message' => $th->getMessage()]);
+        }
     }
 
     /**

@@ -20,6 +20,7 @@ class VisitResponseResource extends JsonResource
             'visit' => $this->visit,
             'name_doctor' => $this->medic->name,
             'surname_doctor' => $this->medic->surname,
+            'visits_recommendations' => $this->recommendations
         ];
     }
 }

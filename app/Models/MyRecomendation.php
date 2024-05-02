@@ -10,6 +10,9 @@ class MyRecomendation extends Model
     use HasFactory;
 
     protected $fillable = [
+        'id_visit',
+        'id_user',
+        'id_medic',
         'recomendation'
     ];
 }

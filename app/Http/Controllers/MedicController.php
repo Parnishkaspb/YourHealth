@@ -52,12 +52,35 @@ class MedicController extends Controller
         //
     }
 
-    /**
-     * Update the specified resource in storage.
-     */
-    public function update(RegisterRequest $request, Medic $medic)
+    public function edit()
     {
+        $user = Auth::user();
+        return new MedicResource($user);
+    }
 
+    public function update(Request $request, Medic $medic)
+    {
+        $medic_auth = Auth::user();
+        $allowedRoles = config('app.allowed_roles');
+
+        if (!in_array($medic_auth->id_profile_ambulance, $allowedRoles)) {
+            return new CodeResponseResource(['message' => 'У вас нет прав на это действие', 'code' => 403]);
+        }
+
+        try {
+            $medic->update([
+                'name' => e($request->name),
+                'surname' => e($request->surname),
+                'email' => $request->email,
+                'telephone' => $request->telephone,
+                'id_profile_ambulance' => $request->id_profile_ambulance
+            ]);
+
+
+            return new CodeResponseResource(['message' => 'Информация обновлена', 'code' => 200]);
+        } catch (\Throwable $th) {
+            return new CodeResponseResource(['message' => $th->getMessage(), 'code' => 422]);
+        }
     }
 
     /**

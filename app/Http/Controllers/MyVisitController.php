@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Http\Requests\MyVisit\CreateRegister;
 use App\Http\Resources\CodeResponseResource;
+use App\Http\Resources\Medic\VisitsResponceResource;
 use App\Http\Resources\MyVisit\VisitResponseResource;
 use App\Models\MyVisit;
 use Illuminate\Http\Request;
@@ -20,6 +21,13 @@ class MyVisitController extends Controller
         $user = Auth::user();
         $visits = $user->visits()->with(['recommendations', 'medic'])->get();
         return VisitResponseResource::collection($visits);
+    }
+
+    public function medic_index()
+    {
+        $medic = Auth::user();
+        $medic_visits = $medic->visits()->with(['user'])->get();
+        return VisitsResponceResource::collection($medic_visits);
     }
 
     /**
